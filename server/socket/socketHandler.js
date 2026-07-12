@@ -100,12 +100,16 @@ export function registerSocketHandlers(io) {
     });
 
     socket.on('typing', ({ username }) => {
-      socket.to('pulsechat').emit('typing', { username });
-    });
+  console.log(`${username} is typing`);
+
+  socket.to('pulsechat').emit('typing', { username });
+});
 
     socket.on('stopTyping', ({ username }) => {
-      socket.to('pulsechat').emit('stopTyping', { username });
-    });
+  console.log(`${username} stopped typing`);
+
+  socket.to('pulsechat').emit('stopTyping', { username });
+});
 
     socket.on('disconnect', async () => {
       if (!isDatabaseConnected()) return;
