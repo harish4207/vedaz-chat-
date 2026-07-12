@@ -1,34 +1,326 @@
-# PulseChat
+# 💬 PulseChat - Real-Time Chat Application
 
-Real-time messaging powered by Socket.io.
+PulseChat is a modern real-time chat application built using **React, Node.js, Express, MongoDB, and Socket.io**. It enables users to join instantly using a username, exchange messages in real time, view chat history, and see currently online users.
 
-PulseChat is a polished full-stack chat app scaffold with a React + Vite frontend and a Node.js + Express + Socket.io backend backed by MongoDB.
+The application demonstrates full-stack development, REST APIs, WebSocket communication, database integration, and cloud deployment.
 
-## Tech Stack
+---
 
-- Frontend: React, Vite, Tailwind CSS, Axios, Socket.io Client, Framer Motion, Lucide React
-- Backend: Node.js, Express, Socket.io, MongoDB, Mongoose, dotenv, cors
+# 🚀 Live Demo
 
-## Project Structure
+### Frontend (Vercel)
 
-```text
-PulseChat/
-├── client/
-└── server/
+https://vedaz-chat-client.vercel.app
+
+### Backend (Render)
+
+https://vedaz-chat.onrender.com
+
+Health Check:
+
+https://vedaz-chat.onrender.com/health
+
+---
+
+# 📸 Features
+
+## Mandatory Features
+
+- Username-based login
+- Real-time messaging using Socket.io
+- Send and receive messages instantly
+- Chat history persistence using MongoDB
+- Message timestamps
+- Responsive modern UI
+- REST APIs for login and chat history
+- Clean project structure
+- Error handling
+- Deployment on Vercel and Render
+
+---
+
+## Additional Features
+
+- Online user list
+- Message delivered status
+- Message read status
+- Automatic reconnection support
+- Glassmorphism UI
+- Mobile responsive design
+- Dark mode support
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
+
+- React
+- Vite
+- React Router
+- Tailwind CSS
+- Socket.io Client
+- Axios
+- Framer Motion
+- Lucide React
+
+## Backend
+
+- Node.js
+- Express.js
+- Socket.io
+- MongoDB Atlas
+- Mongoose
+
+## Deployment
+
+- Vercel (Frontend)
+- Render (Backend)
+
+---
+
+# 📂 Project Structure
+
+```
+pulsechat
+│
+├── client
+│   ├── src
+│   │   ├── components
+│   │   ├── context
+│   │   ├── hooks
+│   │   ├── pages
+│   │   ├── services
+│   │   └── utils
+│   └── package.json
+│
+├── server
+│   ├── config
+│   ├── controllers
+│   ├── middleware
+│   ├── models
+│   ├── routes
+│   ├── socket
+│   ├── utils
+│   └── server.js
+│
+└── README.md
 ```
 
-## Getting Started
+---
 
-1. Copy `.env.example` to `.env` and fill in your MongoDB URI.
-2. Install dependencies in both workspaces.
-3. Start the server and client in separate terminals.
+# ⚙️ Installation
 
-## Scripts
+## Clone Repository
 
-- `npm run dev:client`
-- `npm run dev:server`
-- `npm run build`
+```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+```
 
-## Status
+```bash
+cd YOUR_REPOSITORY
+```
 
-This workspace now contains the initial structure for the full build. The next step is wiring the frontend and backend foundations, then adding the chat flow and real-time features.
+---
+
+# Backend Setup
+
+```bash
+cd server
+```
+
+Install packages
+
+```bash
+npm install
+```
+
+Create a `.env` file
+
+```env
+PORT=5000
+
+MONGO_URI=YOUR_MONGODB_CONNECTION_STRING
+
+CLIENT_URL=http://localhost:5173
+```
+
+Run server
+
+```bash
+npm run dev
+```
+
+---
+
+# Frontend Setup
+
+```bash
+cd client
+```
+
+Install packages
+
+```bash
+npm install
+```
+
+Create `.env`
+
+```env
+VITE_API_URL=http://localhost:5000/api
+
+VITE_SOCKET_URL=http://localhost:5000
+```
+
+Run frontend
+
+```bash
+npm run dev
+```
+
+---
+
+# 🌐 REST APIs
+
+## Login
+
+```
+POST /api/users/login
+```
+
+Request
+
+```json
+{
+  "username": "Harish"
+}
+```
+
+---
+
+## Get Online Users
+
+```
+GET /api/users/online
+```
+
+---
+
+## Fetch Messages
+
+```
+GET /api/messages
+```
+
+---
+
+# 🔌 Socket Events
+
+## Client → Server
+
+- join
+- sendMessage
+- messageRead
+
+---
+
+## Server → Client
+
+- receiveMessage
+- messageDelivered
+- messageRead
+- userOnline
+
+---
+
+# 🗄 Database
+
+MongoDB Atlas is used to store:
+
+### Users
+
+- username
+- online status
+- socketId
+- lastSeen
+
+### Messages
+
+- sender
+- text
+- timestamp
+- delivered
+- read
+
+---
+
+# 🎯 Design Decisions
+
+- React Context API is used for authentication and socket management.
+- Socket.io enables low-latency, real-time communication.
+- MongoDB stores chat history and user presence.
+- REST APIs are used for authentication and history retrieval.
+- The UI is component-based for better maintainability and reusability.
+
+---
+
+# 🧪 Testing
+
+The application has been tested for:
+
+- User login
+- Multiple browser sessions
+- Real-time messaging
+- Chat history persistence
+- Online user updates
+- Logout and reconnect
+- Mobile responsiveness
+- Production deployment
+
+---
+
+# 📸 Screenshots
+
+Add screenshots here.
+
+Example:
+
+- Login Screen
+- Chat Screen
+- Two Browser Real-Time Chat
+- Mobile View
+
+---
+
+# 🔮 Future Improvements
+
+- Private one-to-one chat
+- Group chat
+- Typing indicator
+- File sharing
+- Image sharing
+- Voice messages
+- Emoji support
+- Push notifications
+- JWT authentication
+
+---
+
+# 👨‍💻 Author
+
+**Harish**
+
+GitHub:
+
+https://github.com/YOUR_USERNAME
+
+LinkedIn:
+
+https://linkedin.com/in/YOUR_PROFILE
+
+---
+
+# 📄 License
+
+This project is created for learning purposes and as part of a Full Stack Developer assessment.
