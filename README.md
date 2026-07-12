@@ -323,4 +323,7 @@ https://linkedin.com/in/YOUR_PROFILE
 
 # 📄 License
 
-This project is created for learning purposes and as part of a Full Stack Developer assessment.
+This project is created for learning purposes and as part of a Full Stack Developer assessment.  <img width="1710" height="956" alt="image" src="https://github.com/user-attachments/assets/883e63c8-e154-422a-a1ea-87a219cf2366" />   <img width="1743" height="890" alt="image" src="https://github.com/user-attachments/assets/c838e7b1-d0a3-4445-ad33-2843e77d9649" />  and mob view <img width="716" height="1600" alt="WhatsApp Image 2026-07-12 at 6 26 04 PM" src="https://github.com/user-attachments/assets/39be6bb0-9d21-41b8-8a58-669bff6799b0" />
+
+
+
