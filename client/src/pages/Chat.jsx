@@ -16,11 +16,13 @@ export default function Chat() {
   const [darkMode, setDarkMode] = useState(false);
   const [loadingHistory, setLoadingHistory] = useState(true);
   const [historyError, setHistoryError] = useState('');
+  const [historyReloadCount, setHistoryReloadCount] = useState(0);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [typingUser, setTypingUser] = useState('');
   const listRef = useRef(null);
   const navigate = useNavigate();
   const typingTimeoutRef = useRef(null);
+  const inputRef = useRef(null);
 
   useScroll(listRef, messages.length);
 
@@ -154,13 +156,17 @@ export default function Chat() {
     return () => {
       active = false;
     };
-  }, [user]);
+  }, [historyReloadCount, user]);
 
   const onlineCount = useMemo(() => onlineUsers.length, [onlineUsers]);
 
   const handleLogout = () => {
     setUser(null);
     navigate('/login');
+  };
+
+  const handleRetry = () => {
+    setHistoryReloadCount((value) => value + 1);
   };
 
   const handleSend = async (event) => {
@@ -176,6 +182,9 @@ export default function Chat() {
         }
       });
       setMessage('');
+      window.setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
     } catch (requestError) {
       setHistoryError(requestError.response?.data?.message || 'Failed to send message');
     }
@@ -220,6 +229,9 @@ export default function Chat() {
             message={message}
             setMessage={handleTyping}
             onSend={handleSend}
+            onRetry={handleRetry}
+            inputRef={inputRef}
+            sendDisabled={!message.trim()}
           />
         </section>
       </div>

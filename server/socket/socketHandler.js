@@ -1,5 +1,6 @@
 import Message from '../models/Message.js';
 import User from '../models/User.js';
+import { isDatabaseConnected } from '../config/db.js';
 
 async function setUserOnlineStatus(username, socketId, online) {
   if (!username) return null;
@@ -25,10 +26,14 @@ async function broadcastOnlineUsers(io) {
 
 export function registerSocketHandlers(io) {
   io.on('connection', (socket) => {
-    console.log('User Connected', socket.id);
     socket.emit('server:ready', { ok: true, socketId: socket.id });
 
     socket.on('join', async ({ username }) => {
+      if (!isDatabaseConnected()) {
+        socket.emit('server:error', { message: 'Database unavailable' });
+        return;
+      }
+
       const user = await setUserOnlineStatus(username, socket.id, true);
       socket.data.username = user?.username || username;
       socket.join('pulsechat');
@@ -37,6 +42,11 @@ export function registerSocketHandlers(io) {
 
     socket.on('sendMessage', async (payload, callback) => {
       try {
+        if (!isDatabaseConnected()) {
+          if (callback) callback({ ok: false, error: 'Database unavailable' });
+          return;
+        }
+
         const text = String(payload?.text || '').trim();
         const username = String(payload?.username || socket.data.username || '').trim();
 
@@ -76,6 +86,8 @@ export function registerSocketHandlers(io) {
     socket.on('messageRead', async ({ messageId }) => {
       if (!messageId) return;
 
+      if (!isDatabaseConnected()) return;
+
       const updatedMessage = await Message.findByIdAndUpdate(
         messageId,
         { read: true, delivered: true, status: 'read' },
@@ -96,10 +108,11 @@ export function registerSocketHandlers(io) {
     });
 
     socket.on('disconnect', async () => {
+      if (!isDatabaseConnected()) return;
+
       const username = socket.data.username;
       await setUserOnlineStatus(username, socket.id, false);
       await broadcastOnlineUsers(io);
-      console.log('User Disconnected', socket.id);
     });
   });
 }

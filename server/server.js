@@ -2,6 +2,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import http from 'http';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { Server } from 'socket.io';
 import connectDB from './config/db.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
@@ -9,7 +11,10 @@ import messageRoutes from './routes/messageRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { registerSocketHandlers } from './socket/socketHandler.js';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
 const server = http.createServer(app);
@@ -19,8 +24,6 @@ const io = new Server(server, {
     credentials: true
   }
 });
-
-connectDB();
 
 app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173', credentials: true }));
 app.use(express.json());
@@ -42,9 +45,7 @@ const port = process.env.PORT || 5000;
 async function startServer() {
   try {
     await connectDB();
-    server.listen(port, () => {
-      console.log(`PulseChat server running on port ${port}`);
-    });
+    server.listen(port);
   } catch (error) {
     console.error('Server startup failed:', error.message);
     process.exitCode = 1;

@@ -25,6 +25,11 @@ export function errorHandler(error, _request, response, _next) {
     message = `Invalid ${error.path}`;
   }
 
+  if (error.name === 'MongooseServerSelectionError' || error.name === 'MongoNetworkError') {
+    status = 503;
+    message = 'Database unavailable';
+  }
+
   response.status(status).json({
     success: false,
     message
