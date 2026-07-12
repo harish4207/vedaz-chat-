@@ -65,10 +65,12 @@ export default function Chat() {
     };
 
     const handleTyping = ({ username }) => {
-      if (username && username !== user.username) {
-        setTypingUser(username);
-      }
-    };
+  console.log("Typing event received:", username);
+
+  if (username && username !== user.username) {
+    setTypingUser(username);
+  }
+};
 
     const handleStopTyping = ({ username }) => {
       if (!username || username === user.username) return;
@@ -178,25 +180,37 @@ const handleLogout = () => {
   };
 
   const handleSend = async (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    const text = message.trim();
-    if (!text || !user?.username) return;
+  const text = message.trim();
 
-    try {
-      socket.emit('sendMessage', { username: user.username, text }, (result) => {
-        if (!result?.ok) {
-          setHistoryError(result?.error || 'Failed to send message');
-        }
-      });
-      setMessage('');
+  if (!text || !user?.username) return;
+
+  if (!socket || !socket.connected) {
+    setHistoryError("Socket is not connected.");
+    return;
+  }
+
+  socket.emit(
+    "sendMessage",
+    {
+      username: user.username,
+      text,
+    },
+    (result) => {
+      if (!result?.ok) {
+        setHistoryError(result?.error || "Failed to send message");
+        return;
+      }
+
+      setMessage("");
+
       window.setTimeout(() => {
         inputRef.current?.focus();
       }, 0);
-    } catch (requestError) {
-      setHistoryError(requestError.response?.data?.message || 'Failed to send message');
     }
-  };
+  );
+};
 
   const handleTyping = (value) => {
     setMessage(value);

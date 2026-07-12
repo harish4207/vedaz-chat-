@@ -18,14 +18,26 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
 const server = http.createServer(app);
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.CLIENT_URL,
+];
+
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
-    credentials: true
-  }
+    origin: allowedOrigins,
+    credentials: true,
+  },
 });
 
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173', credentials: true }));
+
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.get('/health', (_request, response) => {
@@ -45,7 +57,9 @@ const port = process.env.PORT || 5000;
 async function startServer() {
   try {
     await connectDB();
-    server.listen(port);
+    server.listen(port, () => {
+  console.log(`🚀 Server running on port ${port}`);
+});
   } catch (error) {
     console.error('Server startup failed:', error.message);
     process.exitCode = 1;
