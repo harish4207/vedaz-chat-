@@ -21,23 +21,35 @@ const server = http.createServer(app);
 const allowedOrigins = [
   "http://localhost:5173",
   process.env.CLIENT_URL,
+  "https://vedaz-chat-client-git-main-harishs-projects-f6620eeb.vercel.app",
+  "https://vedaz-chat-client-40dl7ac21-harishs-projects-f6620eeb.vercel.app",
 ];
-
-const io = new Server(server, {
-  cors: {
-    origin: allowedOrigins,
-    credentials: true,
-  },
-});
-
-
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
+
+const io = new Server(server, {
+  cors: {
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  },
+});
 app.use(express.json());
 
 app.get('/health', (_request, response) => {
