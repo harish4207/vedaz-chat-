@@ -20,9 +20,7 @@ const app = express();
 const server = http.createServer(app);
 const allowedOrigins = [
   "http://localhost:5173",
-  process.env.CLIENT_URL,
-  "https://vedaz-chat-client-git-main-harishs-projects-f6620eeb.vercel.app",
-  "https://vedaz-chat-client-40dl7ac21-harishs-projects-f6620eeb.vercel.app",
+  "https://vedaz-chat-client.vercel.app",
 ];
 
 app.use(
