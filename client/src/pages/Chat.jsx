@@ -73,9 +73,14 @@ export default function Chat() {
 };
 
     const handleStopTyping = ({ username }) => {
-      if (!username || username === user.username) return;
-      setTypingUser((current) => (current === username ? '' : current));
-    };
+  console.log("Stop typing:", username);
+
+  if (!username || username === user.username) return;
+
+  setTimeout(() => {
+    setTypingUser((current) => (current === username ? "" : current));
+  }, 3000);
+};
 
     const handleMessageRead = (updatedMessage) => {
       setMessages((currentMessages) =>

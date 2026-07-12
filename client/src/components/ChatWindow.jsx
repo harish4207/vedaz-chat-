@@ -24,7 +24,11 @@ export default function ChatWindow({ messages = [], loading = false, error = '',
         {messages.map((item) => (
           <ChatBubble key={item.id} message={item} />
         ))}
-        <TypingIndicator username={typingUser} />
+       <div className="text-red-600 font-bold">
+  Typing User: {typingUser || "NONE"}
+</div>
+
+<TypingIndicator username={typingUser} />
       </div>
 
       <ChatInput value={message} onChange={setMessage} onSubmit={onSend} inputRef={inputRef} disabled={sendDisabled} />
