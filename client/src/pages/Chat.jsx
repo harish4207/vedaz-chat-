@@ -105,14 +105,18 @@ export default function Chat() {
       socket.emit('join', { username: user.username });
     }
 
-    return () => {
-      socket.off('connect', handleConnect);
-      socket.off('receiveMessage', handleReceiveMessage);
-      socket.off('userOnline', handleOnlineUsers);
-      socket.off('typing', handleTyping);
-      socket.off('stopTyping', handleStopTyping);
-      socket.off('messageRead', handleMessageRead);
-    };
+   return () => {
+  socket.off('connect', handleConnect);
+  socket.off('receiveMessage', handleReceiveMessage);
+  socket.off('userOnline', handleOnlineUsers);
+  socket.off('typing', handleTyping);
+  socket.off('stopTyping', handleStopTyping);
+  socket.off('messageRead', handleMessageRead);
+
+  if (socket.connected) {
+    socket.disconnect();
+  }
+};
   }, [socket, user?.username]);
 
   useEffect(() => {
@@ -160,10 +164,14 @@ export default function Chat() {
 
   const onlineCount = useMemo(() => onlineUsers.length, [onlineUsers]);
 
-  const handleLogout = () => {
-    setUser(null);
-    navigate('/login');
-  };
+const handleLogout = () => {
+  if (socket && socket.connected) {
+    socket.disconnect();
+  }
+
+  setUser(null);
+  navigate('/login', { replace: true });
+};
 
   const handleRetry = () => {
     setHistoryReloadCount((value) => value + 1);
